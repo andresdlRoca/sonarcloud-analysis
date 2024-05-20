@@ -25,4 +25,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          sonar-scanner --define sonar.cfamily.compile-commands="${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json" -Dsonar.organization=andresdlroca -Dsonar.projectKey=andresdlRoca_sonarcloud-analysis -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io
+          sonar-scanner --define sonar.cfamily.compile-commands="${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json" sonar.organization=andresdlroca sonar.projectKey=andresdlRoca_sonarcloud-analysis sonar.sources=. sonar.host.url=https://sonarcloud.io
