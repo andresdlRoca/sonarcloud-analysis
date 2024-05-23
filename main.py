@@ -8,6 +8,9 @@ def read_file(file_path):
     except FileNotFoundError:
         print(f"The file at {file_path} does not exist.")
         return None
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        return None
     
 def write_file(file_path, data):
     with open(file_path, 'w') as file:
@@ -18,6 +21,9 @@ def get_user_input():
     return user_input
 
 def process_data(data):
+    if data is None:
+        print("No data to process")
+        return ""
     processed_data = data.lower()
     return processed_data
 
@@ -34,7 +40,10 @@ def main():
 
     # Getting user input and writing to a file
     user_input = get_user_input()
-    write_file(file_path, user_input)
+    if user_input:
+        write_file(file_path, user_input)
+    else:
+        write_file(file_path, processed_data)
 
 if __name__ == "__main__":
     main()
