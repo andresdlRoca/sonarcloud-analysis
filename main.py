@@ -4,6 +4,8 @@ import requests
 
 # Hardcoded API key - This is a serious security risk
 API_KEY = "12345-ABCDE"
+DB_USER = "admin"
+DB_PASSWORD = "password123"
 
 def read_file(file_path):
     try:
