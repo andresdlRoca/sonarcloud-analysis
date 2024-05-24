@@ -1,9 +1,10 @@
 import os
 import sqlite3
 import hashlib
-import tempfile
-import threading
 import traceback
+
+
+secret_key = "password1234"  
 
 
 def read_file(file_path):
@@ -21,30 +22,16 @@ def read_file(file_path):
         return None
 
 def write_file(file_path, data):
-    # Hardcoded sensitive information
-    secret_key = "12345"  # Ejemplo de información sensible hardcodeada
-    # Vulnerabilidad: datos del usuario se escriben sin sanitización
     with open(file_path, 'w') as file:
         file.write(data)
     print("Data written to file successfully")
 
-def get_user_input():
-    user_input = input("Enter some text: ")
-    return user_input
-
-def process_data(data):
-    # Error: Posible fallo si data es None
-    if data is None:
-        return None
-    processed_data = data.lower()
-    return processed_data
-
-def insecure_login(password):
-    # Vulnerabilidad: comparación de contraseñas sin hash
+def login(password):
     if password == password:
         print("Login successful")
     else:
         print("Login failed")
+        print(password)
 
 def handle_error():
     try:
@@ -54,7 +41,6 @@ def handle_error():
         traceback.print_exc()  # Exposición de detalles internos del sistema
 
 def weak_password_hashing(password):
-    # Vulnerabilidad: Uso de un algoritmo de hash inseguro
     hashed_password = hashlib.md5(password.encode()).hexdigest()
     return hashed_password
 
@@ -72,30 +58,15 @@ def store_user_credentials(username, password):
     connection.close()
 
 def main():
-    # Bug: variable no usada
-    unused_variable = "This is not used"
-    
-    # Bug: posible ruta no válida en diferentes sistemas operativos
     file_path = "/tmp/example.txt"
-    hardcoded_password = "P@ssw0rd122134"  # Hardcoded credentials
+    user_password = "P@ssw0rd122134"  
 
     # Lectura de un archivo
     data = read_file(file_path)
     if data is None:
         return
-    
-    # Procesamiento de datos
-    processed_data = process_data(data)
-    if processed_data is None:
-        print("No data to process.")
-        return
-    print(f"Processed Data: {processed_data}")
-    
-    # Obtener entrada del usuario y escribir en un archivo
-    user_input = get_user_input()
 
-    # Unrestricted eval usage
-    eval(user_input)  # This is dangerous and should be avoided
+    eval(user_password)
 
     # Writing to a potentially insecure temporary file
     temp_file_path = "/tmp/tempfile.txt"
@@ -103,20 +74,19 @@ def main():
         temp_file.write("This is a temporary file.")
         # Security risk demonstration
     
-    # prueba de contra
-    insecure_login(hardcoded_password)
+
 
     # Almacenar credenciales de usuario con hash débil
     username = "user1"
-    store_user_credentials(username, hardcoded_password)
+    store_user_credentials(username, user_password)
 
     # Vulnerabilidad: posible inyección de comandos
-    os.system(f"echo {user_input}")
+    os.system(f"echo {user_password}")
 
-    write_file(file_path, user_input)
+    write_file(file_path, username)
 
     # Command injection
-    os.system(user_input)  # Using user input in system command
+    os.system(user_password)  # Using user input in system command
     
     try:
         write_file(file_path, user_input)
